@@ -3,35 +3,24 @@ import Table from 'react-bootstrap/Table';
 import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
 
+import { fetchAllUser } from '../services/userServices';
 import ModalAddNew from './ModalAddNew';
 import ModalEditUser from './ModalEditUser';
-import { fetchAllUser } from '../services/userServices';
+import ModalComfirm from './ModalComfirm';
 
 const TableUsers = (props) => {
     const [users, setUsers] = useState([]);
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
+    const [dataUserEdit, setDataUserEdit] = useState({});
+    const [dataUserDelete, setDataUserDelete] = useState({});
+
     const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
     const [isShowModalEditUser, setIsShowModalEditUser] = useState(false);
-    const [dataUserEdit, setDataUserEdit] = useState({});
+    const [isShowModalDelte, setIsShowModalDelte] = useState(false);
 
-    const handleClose = () => {
-        setIsShowModalAddNew(false);
-        setIsShowModalEditUser(false);
-    };
-
-    const handleUpdateTable = (user) => {
-        setUsers([user, ...users]);
-    };
-
-    const handleEditUserFromMoDal = (user) => {
-        let cloneUsers = _.cloneDeep([...users]);
-        let index = users.findIndex((item) => item.id === user.id);
-        cloneUsers[index].first_name = user.first_name;
-        setUsers(cloneUsers);
-    };
-
+    // render data
     useEffect(() => {
         getUsers(1);
     }, []);
@@ -46,13 +35,40 @@ const TableUsers = (props) => {
         }
     };
 
+    // handle chuyển page
     const handlePageClick = (e) => {
         getUsers(+e.selected + 1);
+    };
+
+    // Close modal
+    const handleClose = () => {
+        setIsShowModalAddNew(false);
+        setIsShowModalEditUser(false);
+        setIsShowModalDelte(false);
+    };
+
+    // Update table sau khi thêm user
+    const handleUpdateTable = (user) => {
+        setUsers([user, ...users]);
     };
 
     const handleEditUser = (user) => {
         setDataUserEdit(user);
         setIsShowModalEditUser(true);
+    };
+
+    // Delete User
+    const handleDeleteUser = (user) => {
+        setDataUserDelete(user);
+        setIsShowModalDelte(true);
+    };
+
+    // Edit form
+    const handleEditUserFromModal = (user) => {
+        let cloneUsers = _.cloneDeep([...users]);
+        let index = users.findIndex((item) => item.id === user.id);
+        cloneUsers[index].first_name = user.first_name;
+        setUsers(cloneUsers);
     };
 
     return (
@@ -86,7 +102,9 @@ const TableUsers = (props) => {
                                     <button className="btn btn-info me-4" onClick={() => handleEditUser(user)}>
                                         Edit
                                     </button>
-                                    <button className="btn btn-danger">Delete</button>
+                                    <button className="btn btn-danger" onClick={() => handleDeleteUser(user)}>
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -115,7 +133,14 @@ const TableUsers = (props) => {
                 show={isShowModalEditUser}
                 dataUserEdit={dataUserEdit}
                 handleClose={handleClose}
-                handleEditUserFromMoDal={handleEditUserFromMoDal}
+                handleEditUserFromModal={handleEditUserFromModal}
+            />
+            <ModalComfirm
+                show={isShowModalDelte}
+                handleClose={handleClose}
+                title={'Delete User'}
+                content={'Are you sure to delete user ?'}
+                dataUserDelete={dataUserDelete}
             />
         </>
     );

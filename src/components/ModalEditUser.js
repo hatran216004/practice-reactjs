@@ -4,15 +4,15 @@ import Modal from 'react-bootstrap/Modal';
 import { putUpdateUser } from '../services/userServices';
 import { toast } from 'react-toastify';
 
-const ModalEditUser = ({ show, handleClose, dataUserEdit, handleEditUserFromMoDal }) => {
+const ModalEditUser = ({ show, handleClose, dataUserEdit, handleEditUserFromModal }) => {
     const [name, setName] = useState('');
     const [job, setJob] = useState('');
 
-    const handleEditUser = async () => {
+    const CallApiToEditUser = async () => {
         try {
             let res = await putUpdateUser(name, job);
 
-            handleEditUserFromMoDal({
+            handleEditUserFromModal({
                 first_name: name,
                 id: dataUserEdit.id,
             });
@@ -32,7 +32,7 @@ const ModalEditUser = ({ show, handleClose, dataUserEdit, handleEditUserFromMoDa
 
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit a user</Modal.Title>
                 </Modal.Header>
@@ -71,7 +71,7 @@ const ModalEditUser = ({ show, handleClose, dataUserEdit, handleEditUserFromMoDa
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleEditUser}>
+                    <Button variant="primary" onClick={CallApiToEditUser}>
                         Confirm
                     </Button>
                 </Modal.Footer>
