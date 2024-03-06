@@ -63,10 +63,16 @@ const TableUsers = (props) => {
         setIsShowModalDelte(true);
     };
 
+    const handleDeletetUserFromModal = (user) => {
+        let cloneUsers = _.cloneDeep([...users]);
+        cloneUsers = cloneUsers.filter((item) => item.id !== user.id);
+        setUsers(cloneUsers);
+    };
+
     // Edit form
     const handleEditUserFromModal = (user) => {
         let cloneUsers = _.cloneDeep([...users]);
-        let index = users.findIndex((item) => item.id === user.id);
+        const index = users.findIndex((item) => item.id === user.id);
         cloneUsers[index].first_name = user.first_name;
         setUsers(cloneUsers);
     };
@@ -141,6 +147,7 @@ const TableUsers = (props) => {
                 title={'Delete User'}
                 content={'Are you sure to delete user ?'}
                 dataUserDelete={dataUserDelete}
+                handleDeletetUserFromModal={handleDeletetUserFromModal}
             />
         </>
     );
