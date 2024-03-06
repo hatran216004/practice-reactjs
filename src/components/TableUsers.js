@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import ModalAddNew from './ModalAddNew';
 import Table from 'react-bootstrap/Table';
 import ReactPaginate from 'react-paginate';
 
+import ModalAddNew from './ModalAddNew';
+import ModalEditUser from './ModalEditUser';
 import { fetchAllUser } from '../services/userServices';
 
 const TableUsers = (props) => {
@@ -11,13 +12,16 @@ const TableUsers = (props) => {
     const [totalPages, setTotalPages] = useState(0);
 
     const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
+    const [isShowModalEditUser, setIsShowModalEditUser] = useState(false);
+    const [dataUserEdit, setDataUserEdit] = useState({});
 
     const handleClose = () => {
         setIsShowModalAddNew(false);
+        setIsShowModalEditUser(false);
     };
 
     const handleUpdateTable = (user) => {
-        setUsers((prev) => [user, ...prev]);
+        setUsers([user, ...users]);
     };
 
     useEffect(() => {
@@ -38,6 +42,11 @@ const TableUsers = (props) => {
         getUsers(+e.selected + 1);
     };
 
+    const handleEditUser = (user) => {
+        setDataUserEdit(user);
+        setIsShowModalEditUser(true);
+    };
+
     return (
         <>
             <div className="my-3 d-flex justify-content-between align-items-center">
@@ -48,11 +57,12 @@ const TableUsers = (props) => {
             </div>
             <Table striped bordered hover variant="light">
                 <thead>
-                    <tr>
+                    <tr className="text-center">
                         <th>Id</th>
                         <th>Email</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +74,12 @@ const TableUsers = (props) => {
                                 <td>{user.email}</td>
                                 <td>{user.first_name}</td>
                                 <td>{user.last_name}</td>
+                                <td className="d-flex justify-content-center">
+                                    <button className="btn btn-info me-4" onClick={() => handleEditUser(user)}>
+                                        Edit
+                                    </button>
+                                    <button className="btn btn-danger">Delete</button>
+                                </td>
                             </tr>
                         ))}
                 </tbody>
@@ -87,6 +103,7 @@ const TableUsers = (props) => {
                 activeClassName="active"
             />
             <ModalAddNew show={isShowModalAddNew} handleClose={handleClose} handleUpdateTable={handleUpdateTable} />
+            <ModalEditUser show={isShowModalEditUser} dataUserEdit={dataUserEdit} handleClose={handleClose} />
         </>
     );
 };
