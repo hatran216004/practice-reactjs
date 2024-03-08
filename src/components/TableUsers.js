@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { fetchAllUser } from '../services/userServices';
 import ModalAddNew from './ModalAddNew';
 import ModalEditUser from './ModalEditUser';
 import ModalComfirm from './ModalComfirm';
+import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import './TableUsers.scss';
 
 const TableUsers = (props) => {
     const [users, setUsers] = useState([]);
@@ -19,6 +22,9 @@ const TableUsers = (props) => {
     const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
     const [isShowModalEditUser, setIsShowModalEditUser] = useState(false);
     const [isShowModalDelte, setIsShowModalDelte] = useState(false);
+
+    const [sortBy, setSortBy] = useState('asc');
+    const [sortField, setSortField] = useState('id');
 
     // render data
     useEffect(() => {
@@ -77,6 +83,16 @@ const TableUsers = (props) => {
         setUsers(cloneUsers);
     };
 
+    // Sort
+    const handleSort = (sortBy, sortField) => {
+        setSortBy(sortBy);
+        setSortField(sortField);
+
+        let cloneUsers = _.cloneDeep([...users]);
+        cloneUsers = _.orderBy(cloneUsers, [sortField], [sortBy]);
+        setUsers(cloneUsers);
+    };
+
     return (
         <>
             <div className="my-3 d-flex justify-content-between align-items-center">
@@ -88,9 +104,37 @@ const TableUsers = (props) => {
             <Table striped bordered hover variant="light">
                 <thead>
                     <tr className="text-center">
-                        <th>Id</th>
+                        <th className="sort-header">
+                            Id
+                            <div>
+                                <FontAwesomeIcon
+                                    icon={faSortDown}
+                                    className="arrow-icon"
+                                    onClick={() => handleSort('desc', 'id')}
+                                />
+                                <FontAwesomeIcon
+                                    icon={faSortUp}
+                                    className="arrow-icon"
+                                    onClick={() => handleSort('asc', 'id')}
+                                />
+                            </div>
+                        </th>
                         <th>Email</th>
-                        <th>First Name</th>
+                        <th className="sort-header">
+                            First Name
+                            <div>
+                                <FontAwesomeIcon
+                                    icon={faSortDown}
+                                    className="arrow-icon"
+                                    onClick={() => handleSort('desc', 'first_name')}
+                                />
+                                <FontAwesomeIcon
+                                    icon={faSortUp}
+                                    className="arrow-icon"
+                                    onClick={() => handleSort('asc', 'first_name')}
+                                />
+                            </div>
+                        </th>
                         <th>Last Name</th>
                         <th>Actions</th>
                     </tr>
