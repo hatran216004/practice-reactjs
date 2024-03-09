@@ -34,6 +34,8 @@ const TableUsers = () => {
     const [searchValue, setSearchValue] = useState('');
     const debounced = useDebounce(searchValue, 500);
 
+    const [dataExport, setDataExport] = useState([]);
+
     // render data
     useEffect(() => {
         getUsers(1);
@@ -114,13 +116,25 @@ const TableUsers = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounced]);
 
-    //
-    const csvData = [
-        ['firstname', 'lastname', 'email'],
-        ['Ahmed', 'Tomi', 'ah@smthing.co.com'],
-        ['Raed', 'Labes', 'rl@smthing.co.com'],
-        ['Yezzi', 'Min l3b', 'ymin@cocococo.com'],
-    ];
+    // Data export
+    const getUsersExport = (done) => {
+        let result = [];
+        if (users && users.length > 0) {
+            result.push(['Id', 'Email', 'First name', 'Last name']);
+            users.map((user) => {
+                let arr = [];
+                arr[0] = user.id;
+                arr[1] = user.email;
+                arr[2] = user.first_name;
+                arr[3] = user.last_name;
+                result.push(arr);
+            });
+
+            setDataExport(result);
+
+            done();
+        }
+    };
 
     return (
         <>
@@ -134,9 +148,12 @@ const TableUsers = () => {
                     </label>
 
                     <CSVLink
-                        data={csvData}
                         filename={'user.csv'}
                         className="btn btn-primary d-flex align-items-center gap-2"
+                        data={dataExport}
+                        // Chờ đến khi onClick func xử lý xog => set data => data={dataExport}
+                        asyncOnClick={true}
+                        onClick={getUsersExport}
                     >
                         Export
                         <FontAwesomeIcon icon={faCircleDown} />
