@@ -19,3 +19,24 @@
         margin-top: 10px;
     }
 }
+
+.custom-file-input {
+    outline: none;
+    border: 1px solid transparent;
+    padding: 6px;
+    min-width: 108px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+    border-radius: 4px;
+    color: #fff;
+    background-color: blueviolet;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}

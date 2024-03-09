@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
+import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import { faCircleDown, faFileImport, faPlusCircle, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
 import { fetchAllUser } from '../services/userServices';
 import ModalAddNew from './ModalAddNew';
@@ -113,13 +114,42 @@ const TableUsers = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounced]);
 
+    //
+    const csvData = [
+        ['firstname', 'lastname', 'email'],
+        ['Ahmed', 'Tomi', 'ah@smthing.co.com'],
+        ['Raed', 'Labes', 'rl@smthing.co.com'],
+        ['Yezzi', 'Min l3b', 'ymin@cocococo.com'],
+    ];
+
     return (
         <>
             <div className="my-3 d-flex justify-content-between align-items-center">
                 List users:
-                <button className="btn btn-success" onClick={() => setIsShowModalAddNew(true)}>
-                    Add new user
-                </button>
+                <div className="d-flex align-items-center gap-3">
+                    <label className="custom-file-input">
+                        <input type="file" hidden />
+                        Import
+                        <FontAwesomeIcon icon={faFileImport} />
+                    </label>
+
+                    <CSVLink
+                        data={csvData}
+                        filename={'user.csv'}
+                        className="btn btn-primary d-flex align-items-center gap-2"
+                    >
+                        Export
+                        <FontAwesomeIcon icon={faCircleDown} />
+                    </CSVLink>
+
+                    <button
+                        className="btn btn-success d-flex align-items-center gap-2"
+                        onClick={() => setIsShowModalAddNew(true)}
+                    >
+                        <span>Add new</span>
+                        <FontAwesomeIcon icon={faPlusCircle} />
+                    </button>
+                </div>
             </div>
             <div className="my-3 col-6 me-auto ms-auto">
                 <input
