@@ -117,7 +117,7 @@ const TableUsers = () => {
     }, [debounced]);
 
     // Data export
-    const getUsersExport = (done) => {
+    const getUsersExport = (event, done) => {
         let result = [];
         if (users && users.length > 0) {
             result.push(['Id', 'Email', 'First name', 'Last name']);
@@ -131,7 +131,6 @@ const TableUsers = () => {
             });
 
             setDataExport(result);
-
             done();
         }
     };
@@ -150,10 +149,10 @@ const TableUsers = () => {
                     <CSVLink
                         filename={'user.csv'}
                         className="btn btn-primary d-flex align-items-center gap-2"
-                        data={dataExport}
-                        // Chờ đến khi onClick func xử lý xog => set data => data={dataExport}
+                        // Chờ đến khi onClick func xử lý xog => data={dataExport}
                         asyncOnClick={true}
                         onClick={getUsersExport}
+                        data={dataExport}
                     >
                         Export
                         <FontAwesomeIcon icon={faCircleDown} />
