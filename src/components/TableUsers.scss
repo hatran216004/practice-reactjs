@@ -20,7 +20,9 @@
     }
 }
 
-.custom-file-input {
+.custom-file-input,
+.custom-btn-info,
+.custom-btn-delete {
     outline: none;
     border: 1px solid transparent;
     padding: 6px;
@@ -39,4 +41,12 @@
     &:hover {
         opacity: 0.9;
     }
+}
+
+.custom-btn-info {
+    background-color: #97c0f6;
+}
+
+.custom-btn-delete {
+    background-color: rgb(236, 97, 97);
 }

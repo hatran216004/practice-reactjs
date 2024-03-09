@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import ReactPaginate from 'react-paginate';
+import { toast } from 'react-toastify';
 import _ from 'lodash';
+import Papa from 'papaparse';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDown, faFileImport, faPlusCircle, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
@@ -135,13 +137,63 @@ const TableUsers = () => {
         }
     };
 
+    const handleImportCSV = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            let file = e.target.files[0];
+
+            if (file.type !== 'text/csv') {
+                toast.error('Only acept csv file!');
+                e.target.value = '';
+                return;
+            }
+
+            // Parse local CSV file
+            Papa.parse(file, {
+                // header: true,
+                complete: function (results) {
+                    let rawCSV = results.data;
+                    // validate file
+                    if (rawCSV.length > 0) {
+                        if (rawCSV[0].length === 3) {
+                            if (
+                                // Check element in array header
+                                rawCSV[0][0] !== 'email' ||
+                                rawCSV[0][1] !== 'first_name' ||
+                                rawCSV[0][2] !== 'last_name'
+                            ) {
+                                toast.error('Invalid file format bla bla bla!');
+                            } else {
+                                toast.success('Upload filed succeed!');
+                                let result = [];
+                                rawCSV.map((item, index) => {
+                                    if (index > 0 && item.length === 3) {
+                                        let obj = {};
+                                        obj.email = item[0];
+                                        obj.first_name = item[1];
+                                        obj.last_name = item[2];
+                                        result.push(obj);
+                                    }
+                                });
+                                setUsers(result);
+                            }
+                        } else {
+                            toast.error('Invalid file format!');
+                        }
+                    } else {
+                        toast.error('Not found data!');
+                    }
+                },
+            });
+        }
+    };
+
     return (
         <>
             <div className="my-3 d-flex justify-content-between align-items-center">
                 List users:
                 <div className="d-flex align-items-center gap-3">
                     <label className="custom-file-input">
-                        <input type="file" hidden />
+                        <input type="file" hidden onChange={(e) => handleImportCSV(e)} />
                         Import
                         <FontAwesomeIcon icon={faFileImport} />
                     </label>
@@ -226,10 +278,10 @@ const TableUsers = () => {
                                 <td>{user.first_name}</td>
                                 <td>{user.last_name}</td>
                                 <td className="d-flex justify-content-center">
-                                    <button className="btn btn-info me-4" onClick={() => handleEditUser(user)}>
+                                    <button className="custom-btn-info me-4" onClick={() => handleEditUser(user)}>
                                         Edit
                                     </button>
-                                    <button className="btn btn-danger" onClick={() => handleDeleteUser(user)}>
+                                    <button className="custom-btn-delete" onClick={() => handleDeleteUser(user)}>
                                         Delete
                                     </button>
                                 </td>
