@@ -207,7 +207,7 @@ const TableUsers = () => {
                         data={dataExport}
                     >
                         Export
-                        <FontAwesomeIcon icon={faCircleDown} />
+                        <FontAwesomeIcon icon={faCircleDown} className="icon" />
                     </CSVLink>
 
                     <button
