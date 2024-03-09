@@ -3,16 +3,18 @@ import Table from 'react-bootstrap/Table';
 import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 
 import { fetchAllUser } from '../services/userServices';
 import ModalAddNew from './ModalAddNew';
 import ModalEditUser from './ModalEditUser';
 import ModalComfirm from './ModalComfirm';
-import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import useDebounce from '../hooks/useDebounce';
 import './TableUsers.scss';
 
-const TableUsers = (props) => {
+const TableUsers = () => {
     const [users, setUsers] = useState([]);
+    // eslint-disable-next-line no-unused-vars
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -23,8 +25,13 @@ const TableUsers = (props) => {
     const [isShowModalEditUser, setIsShowModalEditUser] = useState(false);
     const [isShowModalDelte, setIsShowModalDelte] = useState(false);
 
+    // eslint-disable-next-line no-unused-vars
     const [sortBy, setSortBy] = useState('asc');
+    // eslint-disable-next-line no-unused-vars
     const [sortField, setSortField] = useState('id');
+
+    const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebounce(searchValue, 500);
 
     // render data
     useEffect(() => {
@@ -93,6 +100,19 @@ const TableUsers = (props) => {
         setUsers(cloneUsers);
     };
 
+    // Search
+    useEffect(() => {
+        let term = debounced.trimStart('');
+        if (term) {
+            let cloneUsers = _.cloneDeep([...users]);
+            cloneUsers = cloneUsers.filter((user) => user.email.includes(term));
+            setUsers(cloneUsers);
+        } else {
+            getUsers(1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debounced]);
+
     return (
         <>
             <div className="my-3 d-flex justify-content-between align-items-center">
@@ -101,6 +121,17 @@ const TableUsers = (props) => {
                     Add new user
                 </button>
             </div>
+            <div className="my-3 col-6 me-auto ms-auto">
+                <input
+                    value={searchValue}
+                    type="text"
+                    className="form-control"
+                    placeholder="Search user by email"
+                    spellCheck={'false'}
+                    onChange={(e) => setSearchValue(e.target.value.trimStart(''))}
+                />
+            </div>
+
             <Table striped bordered hover variant="light">
                 <thead>
                     <tr className="text-center">
