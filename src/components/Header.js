@@ -2,7 +2,6 @@ import { useLocation, NavLink } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import images from '../assets/imgs';
 
 const Header = () => {
@@ -42,8 +41,12 @@ const Header = () => {
                         </Nav>
 
                         <Nav className="d-flex gap-2 ">
-                            <button className="custom-btn-login">Login</button>
-                            <button className="custom-btn-logout">Logout</button>
+                            <NavLink to="/login" className="custom-btn-login">
+                                Login
+                            </NavLink>
+                            <NavLink to="/logout" className="custom-btn-logout">
+                                Logout
+                            </NavLink>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

@@ -1,5 +1,6 @@
 import './App.scss';
 import Header from './components/Header';
+import Login from './components/Login';
 import TableUsers from './components/TableUsers';
 import { Routes, Route } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
@@ -15,6 +16,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/users" element={<TableUsers />} />
+                        <Route path="/login" element={<Login />} />
                     </Routes>
                 </Container>
             </div>

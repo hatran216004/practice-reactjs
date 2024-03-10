@@ -3,6 +3,12 @@
     user-select: none;
 }
 
+button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
 // Custom pagination
 .pagination {
     justify-content: center;
@@ -21,4 +27,106 @@ a {
 .nav-link a.active {
     color: blueviolet !important;
     text-shadow: 0 0 1px #333;
+}
+
+// Form login
+.form-inner {
+    margin: 50px auto 0;
+    padding: 16px;
+    border-radius: 14px;
+    background-color: #fbab7e;
+    background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form {
+    &-wrapper {
+        width: 100%;
+
+        & label {
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 17px;
+            color: #fff;
+        }
+    }
+
+    &-btn-login {
+        height: 45px;
+        min-width: 150px;
+
+        border-radius: 999px;
+        background-color: rgba($color: blueviolet, $alpha: 0.6);
+
+        font-size: 18px;
+        font-weight: 500;
+        color: #fff;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    &-heading {
+        margin-bottom: 0;
+        color: #fff;
+    }
+
+    &-group {
+        margin-top: 16px;
+    }
+
+    &-input {
+        padding: 0 12px;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 6px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+
+        input {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            flex: 1;
+            height: 100%;
+
+            &::placeholder {
+                color: #999;
+            }
+        }
+    }
+
+    &-icon {
+        color: #666;
+        font-size: 20px;
+        margin-left: 16px;
+        cursor: pointer;
+    }
+
+    &-btn {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &-back {
+        &:hover .icon-back {
+            transform: translateX(-3px);
+        }
+    }
+}
+
+.icon-back {
+    transition: transform 0.3s;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
 }
