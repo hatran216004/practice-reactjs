@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../context/userContext';
 import { faEye, faEyeSlash, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { loginApi } from '../services/userServices';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -12,14 +14,15 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const { loginContext } = useContext(UserContext);
+    let navigate = useNavigate();
+
     useEffect(() => {
         let token = localStorage.getItem('token');
         if (token) {
             navigate('/');
         }
     }, []);
-
-    let navigate = useNavigate();
 
     const handleLogin = async () => {
         if (!email || !password) {
@@ -30,7 +33,7 @@ const Login = () => {
         setLoading(true);
         let res = await loginApi('eve.holt@reqres.in', password);
         if (res && res.token) {
-            localStorage.setItem('token', res.token);
+            loginContext(email, res.token);
             navigate('/');
         } else if (res && res.status === 400) {
             toast.error(res.data.error);
@@ -43,7 +46,7 @@ const Login = () => {
             <h3 className="form-heading">USER LOGIN</h3>
             <form action="" className="form-wrapper" autoComplete="off">
                 <div className="form-group">
-                    <label htmlFor="email">Email (ex: abc@gmail.com)</label>
+                    <label htmlFor="email">Email (ex: eve.holt@reqres.in)</label>
                     <div className="form-input">
                         <input
                             spellCheck="false"
@@ -91,9 +94,11 @@ const Login = () => {
                         {!loading ? 'Login' : <FontAwesomeIcon icon={faSpinner} className="loading" />}
                     </div>
                 </div>
-                <div className="d-inline-flex align-items-center justify-content-start gap-1 form-back">
-                    <FontAwesomeIcon icon={faArrowLeft} className="icon-back" />
-                    <button>Back</button>
+                <div className="form-back">
+                    <Link to="/" className="d-inline-flex align-items-center justify-content-start gap-3">
+                        <FontAwesomeIcon icon={faArrowLeft} className="icon-back" />
+                        Back
+                    </Link>
                 </div>
             </form>
         </div>
