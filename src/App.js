@@ -1,13 +1,10 @@
+import AppRoutes from './routes/AppRoutes';
 import { useContext, useEffect } from 'react';
 import { UserContext } from './context/userContext';
-import './App.scss';
 import Header from './components/Header';
-import Login from './components/Login';
-import TableUsers from './components/TableUsers';
-import { Routes, Route } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import { ToastContainer } from 'react-toastify';
-import Home from './components/Home';
+import './App.scss';
 
 function App() {
     // eslint-disable-next-line no-unused-vars
@@ -26,11 +23,7 @@ function App() {
             <div className="app-container">
                 <Header />
                 <Container>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/users" element={<TableUsers />} />
-                        <Route path="/login" element={<Login />} />
-                    </Routes>
+                    <AppRoutes />
                 </Container>
             </div>
             <ToastContainer

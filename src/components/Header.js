@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import { useLocation, NavLink, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
@@ -6,19 +6,12 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import images from '../assets/imgs';
 import { toast } from 'react-toastify';
-import { divide } from 'lodash';
 
 const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
     const { logout, user } = useContext(UserContext);
-
-    // useEffect(() => {
-    //     if (window.location.pathname === '/login') {
-    //         setHideHeader(true);
-    //     }
-    // }, []);
 
     const handleLogout = () => {
         logout();
