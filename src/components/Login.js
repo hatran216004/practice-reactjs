@@ -1,12 +1,27 @@
 import { useState } from 'react';
 import { faEye, faEyeSlash, faUser } from '@fortawesome/free-regular-svg-icons';
-import { faArrowLeft, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { loginApi } from '../services/userServices';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            toast.error('Please enter your email and password!');
+            return;
+        }
+
+        let res = await loginApi('eve.holt@reqres.in', password);
+        if (res && res.token) {
+            localStorage.setItem('token', res.token);
+        }
+    };
 
     return (
         <div className="form-inner col-lg-6 col-sm-4">
@@ -54,7 +69,13 @@ const Login = () => {
                 </div>
 
                 <div className="form-btn">
-                    <button className={email && password ? 'form-btn-login' : 'form-btn-login disabled'}>Login</button>
+                    <Link
+                        to="/users"
+                        className={email && password ? 'form-btn-login' : 'form-btn-login disabled'}
+                        onClick={() => handleLogin()}
+                    >
+                        Login
+                    </Link>
                 </div>
                 <div className="d-flex align-items-center justify-content-start gap-1 form-back">
                     <FontAwesomeIcon icon={faArrowLeft} className="icon-back" />

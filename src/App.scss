@@ -58,6 +58,10 @@ a {
         height: 45px;
         min-width: 150px;
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         border-radius: 999px;
         background-color: rgba($color: blueviolet, $alpha: 0.6);
 
