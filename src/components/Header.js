@@ -1,11 +1,19 @@
-import { useLocation, NavLink } from 'react-router-dom';
+import { useLocation, NavLink, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import images from '../assets/imgs';
+import { toast } from 'react-toastify';
 
 const Header = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/');
+        toast.success('Logout success!');
+    };
 
     return (
         <>
@@ -44,9 +52,9 @@ const Header = () => {
                             <NavLink to="/login" className="custom-btn-login">
                                 Login
                             </NavLink>
-                            <NavLink to="/logout" className="custom-btn-logout">
+                            <div className="custom-btn-logout" onClick={() => handleLogout()}>
                                 Logout
-                            </NavLink>
+                            </div>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
