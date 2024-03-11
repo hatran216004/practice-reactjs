@@ -1,4 +1,3 @@
-import { Routes, Route } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import Alert from 'react-bootstrap/Alert';
@@ -8,7 +7,7 @@ const PrivateRoutes = ({ children }) => {
 
     if (user && !user.auth) {
         return (
-            <Alert variant="danger">
+            <Alert variant="danger" className="text-center">
                 <Alert.Heading>You need to login</Alert.Heading>
                 <p>
                     Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula,

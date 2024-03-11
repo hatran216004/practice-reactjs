@@ -189,9 +189,9 @@ const TableUsers = () => {
 
     return (
         <>
-            <div className="my-3 d-flex justify-content-between align-items-center">
-                List users:
-                <div className="d-flex align-items-center gap-3">
+            <div className="my-3 d-flex justify-content-between align-items-center flex-sm-nowrap flex-wrap gap-2">
+                <span className="col-12 col-sm-6">List users:</span>
+                <div className="d-flex align-items-center gap-3 ms-auto me-auto me-sm-0">
                     <label className="custom-file-input">
                         <input type="file" hidden onChange={(e) => handleImportCSV(e)} />
                         Import
@@ -219,7 +219,7 @@ const TableUsers = () => {
                     </button>
                 </div>
             </div>
-            <div className="my-3 col-6 me-auto ms-auto">
+            <div className="my-3 col-12 col-sm-6 me-auto ms-auto">
                 <input
                     value={searchValue}
                     type="text"
@@ -230,65 +230,67 @@ const TableUsers = () => {
                 />
             </div>
 
-            <Table striped bordered hover variant="light">
-                <thead>
-                    <tr className="text-center">
-                        <th className="sort-header">
-                            Id
-                            <div>
-                                <FontAwesomeIcon
-                                    icon={faSortDown}
-                                    className="arrow-icon"
-                                    onClick={() => handleSort('desc', 'id')}
-                                />
-                                <FontAwesomeIcon
-                                    icon={faSortUp}
-                                    className="arrow-icon"
-                                    onClick={() => handleSort('asc', 'id')}
-                                />
-                            </div>
-                        </th>
-                        <th>Email</th>
-                        <th className="sort-header">
-                            First Name
-                            <div>
-                                <FontAwesomeIcon
-                                    icon={faSortDown}
-                                    className="arrow-icon"
-                                    onClick={() => handleSort('desc', 'first_name')}
-                                />
-                                <FontAwesomeIcon
-                                    icon={faSortUp}
-                                    className="arrow-icon"
-                                    onClick={() => handleSort('asc', 'first_name')}
-                                />
-                            </div>
-                        </th>
-                        <th>Last Name</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users &&
-                        users.length > 0 &&
-                        users.map((user, index) => (
-                            <tr key={`user-${index}`}>
-                                <td>{user.id}</td>
-                                <td>{user.email}</td>
-                                <td>{user.first_name}</td>
-                                <td>{user.last_name}</td>
-                                <td className="d-flex justify-content-center">
-                                    <button className="custom-btn-info me-4" onClick={() => handleEditUser(user)}>
-                                        Edit
-                                    </button>
-                                    <button className="custom-btn-delete" onClick={() => handleDeleteUser(user)}>
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </Table>
+            <div className="custom-table">
+                <Table striped bordered hover variant="light">
+                    <thead>
+                        <tr className="text-center">
+                            <th className="sort-header">
+                                Id
+                                <div>
+                                    <FontAwesomeIcon
+                                        icon={faSortDown}
+                                        className="arrow-icon"
+                                        onClick={() => handleSort('desc', 'id')}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faSortUp}
+                                        className="arrow-icon"
+                                        onClick={() => handleSort('asc', 'id')}
+                                    />
+                                </div>
+                            </th>
+                            <th>Email</th>
+                            <th className="sort-header">
+                                First Name
+                                <div>
+                                    <FontAwesomeIcon
+                                        icon={faSortDown}
+                                        className="arrow-icon"
+                                        onClick={() => handleSort('desc', 'first_name')}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faSortUp}
+                                        className="arrow-icon"
+                                        onClick={() => handleSort('asc', 'first_name')}
+                                    />
+                                </div>
+                            </th>
+                            <th>Last Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users &&
+                            users.length > 0 &&
+                            users.map((user, index) => (
+                                <tr key={`user-${index}`}>
+                                    <td>{user.id}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.first_name}</td>
+                                    <td>{user.last_name}</td>
+                                    <td className="d-flex justify-content-center">
+                                        <button className="custom-btn-info me-4" onClick={() => handleEditUser(user)}>
+                                            Edit
+                                        </button>
+                                        <button className="custom-btn-delete" onClick={() => handleDeleteUser(user)}>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </Table>
+            </div>
             <ReactPaginate
                 breakLabel="..."
                 nextLabel="next >"

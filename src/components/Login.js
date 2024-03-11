@@ -31,7 +31,7 @@ const Login = () => {
         }
 
         setLoading(true);
-        let res = await loginApi('eve.holt@reqres.in', password);
+        let res = await loginApi(email, password);
         if (res && res.token) {
             loginContext(email, res.token);
             navigate('/');
@@ -41,12 +41,19 @@ const Login = () => {
         setLoading(false);
     };
 
+    // Press enter
+    const handlePressEnter = (e) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    };
+
     return (
         <div className="form-inner col-lg-6 col-sm-4">
             <h3 className="form-heading">USER LOGIN</h3>
             <form action="" className="form-wrapper" autoComplete="off">
                 <div className="form-group">
-                    <label htmlFor="email">Email (ex: eve.holt@reqres.in)</label>
+                    <label htmlFor="email">Email (eg: eve.holt@reqres.in)</label>
                     <div className="form-input">
                         <input
                             spellCheck="false"
@@ -69,6 +76,7 @@ const Login = () => {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(e) => handlePressEnter(e)}
                         />
                         {showPassword ? (
                             <FontAwesomeIcon
